@@ -1508,21 +1508,71 @@ translations <- list(
   # Função para resetar valores
   resetValues <- function() {
     # Reset dos inputs baseado na distribuição atual
-    if (input$dist == "norm") {
-      updateNumericInput(session, "mean", value = 0)
-      updateNumericInput(session, "sd", value = 1)
-    } else if (input$dist == "t") {
-      updateNumericInput(session, "df", value = 5)
-    } else if (input$dist == "chisq") {
-      updateNumericInput(session, "df", value = 1)
-    } else if (input$dist == "f") {
-      updateNumericInput(session, "df1", value = 1)
-      updateNumericInput(session, "df2", value = 1)
-    } else if (input$dist == "gamma") {
-      updateNumericInput(session, "gamma_shape", value = 2)
-      updateNumericInput(session, "gamma_rate", value = 1)
-    }
-    # ... adicione outros casos para cada distribuição ...
+    switch(input$dist,
+      "norm" = {
+        updateNumericInput(session, "mean", value = 0)
+        updateNumericInput(session, "sd", value = 1)
+      },
+      "t" = {
+        updateNumericInput(session, "df", value = 5)
+      },
+      "chisq" = {
+        updateNumericInput(session, "df", value = 1)
+      },
+      "f" = {
+        updateNumericInput(session, "df1", value = 1)
+        updateNumericInput(session, "df2", value = 1)
+      },
+      "gamma" = {
+        updateNumericInput(session, "gamma_shape", value = 2)
+        updateNumericInput(session, "gamma_rate", value = 1)
+      },
+      "lnorm" = {
+        updateNumericInput(session, "meanlog", value = 0)
+        updateNumericInput(session, "sdlog", value = 1)
+      },
+      "pareto" = {
+        updateNumericInput(session, "pareto_m", value = 1)
+        updateNumericInput(session, "pareto_alpha", value = 1)
+      },
+      "weibull" = {
+        updateNumericInput(session, "weibull_alpha", value = 1)
+        updateNumericInput(session, "weibull_beta", value = 1)
+      },
+      "binom" = {
+        updateNumericInput(session, "binom_n", value = 10)
+        updateNumericInput(session, "binom_p", value = 0.5)
+      },
+      "pois" = {
+        updateNumericInput(session, "lambda", value = 1)
+      },
+      "geom1" = {
+        updateNumericInput(session, "geom1_p", value = 0.5)
+      },
+      "geom2" = {
+        updateNumericInput(session, "geom2_p", value = 0.5)
+      },
+      "hyper" = {
+        updateNumericInput(session, "hyper_K", value = 10)
+        updateNumericInput(session, "hyper_N", value = 20)
+        updateNumericInput(session, "hyper_n", value = 5)
+      },
+      "nbin1" = {
+        updateNumericInput(session, "nbin1_r", value = 1)
+        updateNumericInput(session, "nbin1_p", value = 0.5)
+      },
+      "nbin2" = {
+        updateNumericInput(session, "nbin2_r", value = 1)
+        updateNumericInput(session, "nbin2_p", value = 0.5)
+      },
+      "beta" = {
+        updateNumericInput(session, "alpha", value = 1)
+        updateNumericInput(session, "beta", value = 1)
+      },
+      "exp" = {
+        updateNumericInput(session, "lambda_exp", value = 1)
+      }
+    )
     
     # Reset dos inputs comuns
     updateNumericInput(session, "x_value", value = 0)
