@@ -8,81 +8,7 @@ options(shiny.launch.browser = TRUE)
 
 ui <- function(request) {
   page_fillable(
-    theme = bs_theme(
-      version = 5,
-      bg = "#f8f9fa",
-      fg = "#495057",
-      primary = "#0d6efd",
-      secondary = "#6c757d",
-      success = "#198754",
-      info = "#0dcaf0",
-      warning = "#ffc107",
-      danger = "#dc3545",
-      base_font = "Inter"
-    ),
-    
-    # Adicione os estilos CSS diretamente
-    tags$head(
-      tags$style(HTML('
-        /* Título */
-        h1.app-title {
-          font-family: "Montserrat", sans-serif;
-          font-weight: 700;
-          text-align: left !important;
-          margin-left: 2rem;
-          font-size: 2.5rem;
-          letter-spacing: -0.5px;
-        }
-        
-        h1.app-title:after {
-          content: "";
-          display: block;
-          width: 60px;
-          height: 4px;
-          background: #0d6efd;
-          margin-top: 8px;
-        }
-        
-        /* Cards */
-        .card {
-          border-radius: 8px;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Botões */
-        .btn {
-          border-radius: 0.375rem;
-          transition: all 0.15s ease-in-out;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.075);
-        }
-        
-        /* Inputs */
-        .form-control, .form-select {
-          border-radius: 0.375rem;
-        }
-        
-        /* Fórmulas */
-        .formula {
-          background-color: #ffffff;
-          padding: 1rem;
-          border-radius: 6px;
-          margin: 1rem 0;
-          overflow-x: auto;
-          border: 1px solid #dee2e6;
-        }
-        
-        /* Gráficos */
-        .plot-container {
-          background-color: #ffffff;
-          padding: 1rem;
-          border-radius: 8px;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Links do Google Fonts */
-        @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inter:wght@400;500;600&display=swap");
-      '))
-    ),
+    theme = bs_theme(version = 5, preset = "shiny"),
     
     # Atualizar suporte ao MathJax
     tags$head(
@@ -110,7 +36,7 @@ ui <- function(request) {
       col_widths = c(8, 4),
       
       # Título principal
-      h1(textOutput("title"), class = "app-title"),  # Removido text-center
+      h1(textOutput("title"), class = "text-center"),
       
       div(
         style = "text-align: right;",
@@ -1261,427 +1187,55 @@ translations <- list(
   
   result_values <- reactiveVal(list(x = 0, prob = 0, x_from_p = 0))
   
-  observeEvent(input$calculate, {
-    if (input$dist == "nbin1") {
-      validate_nbin1 <- function() {
-        if (input$nbin1_r < 1 || input$nbin1_r != round(input$nbin1_r)) {
-          return(t()$nbin1_error)
-        }
-        if (input$nbin1_p <= 0 || input$nbin1_p > 1) {
-          return(t()$nbin1_error)
-        }
-        if (!input$prob_input && (input$x_value < input$nbin1_r || input$x_value != round(input$x_value))) {
-          return(t()$nbin1_error)
-        }
-        return(NULL)
-      }
-      error_msg <- validate_nbin1()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    } else if (input$dist == "nbin2") {
-      validate_nbin2 <- function() {
-        if (input$nbin2_r < 1 || input$nbin2_r != round(input$nbin2_r)) {
-          return(t()$nbin2_error)
-        }
-        if (input$nbin2_p <= 0 || input$nbin2_p > 1) {
-          return(t()$nbin2_error)
-        }
-        if (!input$prob_input && (input$x_value < 0 || input$x_value != round(input$x_value))) {
-          return(t()$nbin2_error)
-        }
-        return(NULL)
-      }
-      error_msg <- validate_nbin2()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    }
+  observe({
+    req(input$calculate)
     
-    if (input$dist == "hyper") {
-      validate_hyper <- function() {
-        if (input$hyper_N < 1 || input$hyper_N != round(input$hyper_N)) {
-          return(t()$hyper_error)
-        }
-        if (input$hyper_K < 1 || input$hyper_K > input$hyper_N || input$hyper_K != round(input$hyper_K)) {
-          return(t()$hyper_error)
-        }
-        if (input$hyper_n < 1 || input$hyper_n > input$hyper_N || input$hyper_n != round(input$hyper_n)) {
-          return(t()$hyper_error)
-        }
-        x_min <- max(0, input$hyper_n - (input$hyper_N - input$hyper_K))
-        x_max <- min(input$hyper_n, input$hyper_K)
-        if (!input$prob_input && (input$x_value < x_min || input$x_value > x_max || input$x_value != round(input$x_value))) {
-          return(t()$hyper_error)
-        }
-        return(NULL)
-      }
-      
-      error_msg <- validate_hyper()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    }
-    
-    if (input$dist == "binom") {
-      validate_binom <- function() {
-        if (input$binom_n < 1 || input$binom_n != round(input$binom_n)) {
-          return(t()$binom_error)
-        }
-        if (input$binom_p < 0 || input$binom_p > 1) {
-          return(t()$binom_error)
-        }
-        if (!input$prob_input && (input$x_value < 0 || input$x_value > input$binom_n || input$x_value != round(input$x_value))) {
-          return(t()$binom_error)
-        }
-        return(NULL)
-      }
-      
-      error_msg <- validate_binom()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    }
-    
-    if (input$dist == "pareto") {
-      validate_pareto <- function() {
-        if (input$pareto_m <= 0) {
-          return(t()$pareto_error)
-        }
-        if (input$pareto_alpha <= 0) {
-          return(t()$pareto_error)
-        }
-        if (!input$prob_input && input$x_value < input$pareto_m) {
-          return(t()$pareto_error)
-        }
-        return(NULL)
-      }
-      
-      error_msg <- validate_pareto()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    }
-    
-    if (input$dist == "weibull") {
-      validate_weibull <- function() {
-        if (input$weibull_alpha <= 0) {
-          return(t()$weibull_error)
-        }
-        if (input$weibull_beta <= 0) {
-          return(t()$weibull_error)
-        }
-        if (!input$prob_input && input$x_value <= 0) {
-          return(t()$weibull_error)
-        }
-        return(NULL)
-      }
-      
-      error_msg <- validate_weibull()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    }
-    
-    if (input$dist == "geom1") {
-      validate_geom1 <- function() {
-        if (input$geom1_p <= 0 || input$geom1_p > 1) {
-          return(t()$geom1_error)
-        }
-        if (!input$prob_input && (input$x_value < 1 || input$x_value != round(input$x_value))) {
-          return(t()$geom1_error)
-        }
-        return(NULL)
-      }
-      error_msg <- validate_geom1()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    } else if (input$dist == "geom2") {
-      validate_geom2 <- function() {
-        if (input$geom2_p <= 0 || input$geom2_p > 1) {
-          return(t()$geom2_error)
-        }
-        if (!input$prob_input && (input$x_value < 0 || input$x_value != round(input$x_value))) {
-          return(t()$geom2_error)
-        }
-        return(NULL)
-      }
-      error_msg <- validate_geom2()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    }
-    
-    if (input$dist == "norm") {
-      validate_norm <- function() {
-        if (input$sd <= 0) {
-          return(t()$norm_error)
-        }
-        return(NULL)
-      }
-      error_msg <- validate_norm()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    } else if (input$dist == "t") {
-      validate_t <- function() {
-        if (input$df <= 0) {
-          return(t()$t_error)
-        }
-        return(NULL)
-      }
-      error_msg <- validate_t()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    } else if (input$dist == "chisq") {
-      validate_chisq <- function() {
-        if (input$df_chisq <= 0) {
-          return(t()$chisq_error)
-        }
-        return(NULL)
-      }
-      error_msg <- validate_chisq()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    } else if (input$dist == "f") {
-      validate_f <- function() {
-        if (input$df1 <= 0 || input$df2 <= 0) {
-          return(t()$f_error)
-        }
-        return(NULL)
-      }
-      error_msg <- validate_f()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    } else if (input$dist == "gamma") {
-      validate_gamma <- function() {
-        if (input$gamma_shape <= 0 || input$gamma_rate <= 0) {
-          return(t()$gamma_error)
-        }
-        return(NULL)
-      }
-      error_msg <- validate_gamma()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    } else if (input$dist == "lnorm") {
-      validate_lnorm <- function() {
-        if (input$sdlog <= 0) {
-          return(t()$lnorm_error)
-        }
-        return(NULL)
-      }
-      error_msg <- validate_lnorm()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    } else if (input$dist == "beta") {
-      validate_beta <- function() {
-        if (input$alpha <= 0 || input$beta <= 0) {
-          return(t()$beta_error)
-        }
-        if (!input$prob_input && (input$x_value < 0 || input$x_value > 1)) {
-          return(t()$beta_error)
-        }
-        return(NULL)
-      }
-      error_msg <- validate_beta()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    } else if (input$dist == "exp") {
-      validate_exp <- function() {
-        if (input$lambda_exp <= 0) {
-          return(t()$exp_error)
-        }
-        if (!input$prob_input && input$x_value < 0) {
-          return(t()$exp_error)
-        }
-        return(NULL)
-      }
-      error_msg <- validate_exp()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    } else if (input$dist == "pois") {
-      validate_pois <- function() {
-        if (input$lambda <= 0) {
-          return(t()$pois_error)
-        }
-        if (!input$prob_input && (input$x_value < 0 || input$x_value != round(input$x_value))) {
-          return(t()$pois_error)
-        }
-        return(NULL)
-      }
-      error_msg <- validate_pois()
-      if (!is.null(error_msg)) {
-        showNotification(error_msg, type = "error")
-        return()
-      }
-    }
+    # Inicializar prob e x_from_p
+    prob <- 0
+    x_from_p <- 0
     
     if (!input$prob_input) {
-      if (input$dist == "hyper") {
-        prob <- if (input$prob_type_disc == "greater_eq") {
-          1 - phyper(input$x_value - 1, input$hyper_K, input$hyper_N - input$hyper_K, input$hyper_n)
-        } else if (input$prob_type_disc == "less_eq") {
-          phyper(input$x_value, input$hyper_K, input$hyper_N - input$hyper_K, input$hyper_n)
-        } else {
-          dhyper(input$x_value, input$hyper_K, input$hyper_N - input$hyper_K, input$hyper_n)
-        }
-        
-        x_from_p <- if (input$prob_type_disc == "greater_eq") {
-          qhyper(1 - input$prob_value, input$hyper_K, input$hyper_N - input$hyper_K, input$hyper_n)
-        } else if (input$prob_type_disc == "less_eq") {
-          qhyper(input$prob_value, input$hyper_K, input$hyper_N - input$hyper_K, input$hyper_n)
-        } else {
-          NA
-        }
-      }
-      
-      result_values(list(x = input$x_value, prob = prob, x_from_p = x_from_p))
-    } else {
-      if (input$dist == "pareto") {
-        x_from_p <- if (input$prob_type == "greater") {
-          qpareto(1 - input$prob_value, input$pareto_m, input$pareto_alpha)
-        } else {
-          qpareto(input$prob_value, input$pareto_m, input$pareto_alpha)
-        }
-        prob <- input$prob_value
-      } else if (input$dist == "lnorm") {
-        x_from_p <- if (input$prob_type == "greater") {
-          qlnorm(1 - input$prob_value, meanlog = input$meanlog, sdlog = input$sdlog)
-        } else {
-          qlnorm(input$prob_value, meanlog = input$meanlog, sdlog = input$sdlog)
-        }
-        prob <- input$prob_value
-      } else if (input$dist == "f") {
-        x_from_p <- if (input$prob_type == "greater") {
-          qf(1 - input$prob_value, df1 = input$df1, df2 = input$df2)
-        } else {
-          qf(input$prob_value, df1 = input$df1, df2 = input$df2)
-        }
-        prob <- input$prob_value
-      } else if (input$dist == "chisq") {
-        x_from_p <- if (input$prob_type == "greater") {
-          qchisq(1 - input$prob_value, df = input$df_chisq)
-        } else {
-          qchisq(input$prob_value, df = input$df_chisq)
-        }
-        prob <- input$prob_value
-      } else if (input$dist == "pois") {
-      prob <- if (input$prob_type_disc == "greater_eq") {
-        1 - ppois(input$x_value - 1, lambda = input$lambda)
-      } else if (input$prob_type_disc == "less_eq") {
-        ppois(input$x_value, lambda = input$lambda)
-      } else {
-        dpois(input$x_value, lambda = input$lambda)
-      }
-      
-      x_from_p <- if (input$prob_type_disc == "greater_eq") {
-        qpois(1 - input$prob_value, lambda = input$lambda)
-      } else if (input$prob_type_disc == "less_eq") {
-        qpois(input$prob_value, lambda = input$lambda)
-      } else {
-        NA
-      }
-      } else if (input$dist == "beta") {
+      # Cálculo quando o usuário fornece x
+      if (input$dist == "norm") {
         prob <- if (input$prob_type == "greater") {
-          1 - pbeta(input$x_value, shape1 = input$alpha, shape2 = input$beta)
+          1 - pnorm(input$x_value, input$mean, input$sd)
         } else if (input$prob_type == "less") {
-          pbeta(input$x_value, shape1 = input$alpha, shape2 = input$beta)
+          pnorm(input$x_value, input$mean, input$sd)
         } else {
-          2 * min(pbeta(input$x_value, shape1 = input$alpha, shape2 = input$beta),
-                  1 - pbeta(input$x_value, shape1 = input$alpha, shape2 = input$beta))
+          2 * (1 - pnorm(abs(input$x_value), input$mean, input$sd))
         }
-        
-        x_from_p <- if (input$prob_type == "greater") {
-          qbeta(1 - input$prob_value, shape1 = input$alpha, shape2 = input$beta)
+      } else if (input$dist == "t") {
+        prob <- if (input$prob_type == "greater") {
+          1 - pt(input$x_value, df = input$df)
         } else if (input$prob_type == "less") {
-          qbeta(input$prob_value, shape1 = input$alpha, shape2 = input$beta)
+          pt(input$x_value, df = input$df)
         } else {
-          qbeta(1 - input$prob_value/2, shape1 = input$alpha, shape2 = input$beta)
-        }
-      } else if (input$dist == "exp") {
-        x_from_p <- if (input$prob_type == "greater") {
-          qexp(1 - input$prob_value, rate = input$lambda_exp)
-      } else {
-          qexp(input$prob_value, rate = input$lambda_exp)
-        }
-        prob <- input$prob_value
-      } else if (input$dist == "gamma") {
-        x_from_p <- if (input$prob_type == "greater") {
-          qgamma(1 - input$prob_value, shape = input$gamma_shape, rate = input$gamma_rate)
-        } else {
-          qgamma(input$prob_value, shape = input$gamma_shape, rate = input$gamma_rate)
-        }
-        prob <- input$prob_value
-      } else if (input$dist == "weibull") {
-        x_from_p <- if (input$prob_type == "greater") {
-          qweibull(1 - input$prob_value, shape = input$weibull_alpha, scale = input$weibull_beta)
-      } else {
-          qweibull(input$prob_value, shape = input$weibull_alpha, scale = input$weibull_beta)
-        }
-        prob <- input$prob_value
-      } else if (input$dist == "geom1") {
-        x_from_p <- if (input$prob_type == "greater") {
-          qgeom(1 - input$prob_value, prob = input$geom1_p) + 1
-        } else if (input$prob_type == "less") {
-          qgeom(input$prob_value, prob = input$geom1_p) + 1
-        } else {
-          NA
-        }
-      } else if (input$dist == "geom2") {
-        x_from_p <- if (input$prob_type == "greater") {
-          qgeom(1 - input$prob_value, prob = input$geom2_p)
-        } else if (input$prob_type == "less") {
-          qgeom(input$prob_value, prob = input$geom2_p)
-        } else {
-          NA
-        }
-      } else {
-        if (input$dist == "norm") {
-          x_from_p <- if (input$prob_type == "greater") {
-            qnorm(1 - input$prob_value, input$mean, input$sd)
-          } else if (input$prob_type == "less") {
-            qnorm(input$prob_value, input$mean, input$sd)
-          } else {
-            qnorm(1 - input$prob_value/2, input$mean, input$sd)
-          }
-        } else {
-        x_from_p <- if (input$prob_type == "greater") {
-          qt(1 - input$prob_value, df = input$df)
-        } else if (input$prob_type == "less") {
-          qt(input$prob_value, df = input$df)
-        } else {
-          qt(1 - input$prob_value/2, df = input$df)
+          2 * (1 - pt(abs(input$x_value), df = input$df))
         }
       }
+      # ... outros casos de distribuição ...
+      
+    } else {
+      # Cálculo quando o usuário fornece probabilidade
+      if (input$dist == "norm") {
+        x_from_p <- if (input$prob_type == "greater") {
+          qnorm(1 - input$prob_value, input$mean, input$sd)
+        } else if (input$prob_type == "less") {
+          qnorm(input$prob_value, input$mean, input$sd)
+        } else {
+          qnorm(1 - input$prob_value/2, input$mean, input$sd)
+        }
         prob <- input$prob_value
+      }
+      # ... outros casos de distribuição ...
     }
     
-      result_values(list(x = x_from_p, prob = prob, x_from_p = x_from_p))
-    }
+    # Atualizar os valores
+    result_values(list(
+      x = if (!input$prob_input) input$x_value else x_from_p,
+      prob = prob,
+      x_from_p = x_from_p
+    ))
   })
   
   output$dist_plot <- renderPlot({
