@@ -40,11 +40,20 @@ ui <- function(request) {
       
       div(
         style = "text-align: right;",
+        # Botão de reset
+        actionButton(
+          "reset_btn",
+          label = NULL,
+          icon = icon("rotate-left"),  # ou "refresh" ou "undo"
+          class = "btn btn-link", 
+          style = "font-size: 24px; padding: 0px 4px; color: #666; margin-right: 8px;"
+        ),
+        # Botão de configurações
         actionButton(
           "settings_btn",
           label = NULL,
           icon = icon("gear"),
-                     class = "btn btn-link", 
+          class = "btn btn-link", 
           style = "font-size: 24px; padding: 0px 4px; color: #666;"
         )
       )
@@ -1190,53 +1199,240 @@ translations <- list(
   observe({
     req(input$calculate)
     
-    # Inicializar prob e x_from_p
-    prob <- 0
-    x_from_p <- 0
-    
     if (!input$prob_input) {
       # Cálculo quando o usuário fornece x
-      if (input$dist == "norm") {
-        prob <- if (input$prob_type == "greater") {
-          1 - pnorm(input$x_value, input$mean, input$sd)
-        } else if (input$prob_type == "less") {
-          pnorm(input$x_value, input$mean, input$sd)
-        } else {
-          2 * (1 - pnorm(abs(input$x_value), input$mean, input$sd))
+      prob <- switch(input$dist,
+        "norm" = {
+          if (input$prob_type == "greater") {
+            1 - pnorm(input$x_value, input$mean, input$sd)
+          } else if (input$prob_type == "less") {
+            pnorm(input$x_value, input$mean, input$sd)
+          } else {
+            2 * (1 - pnorm(abs(input$x_value), input$mean, input$sd))
+          }
+        },
+        "t" = {
+          if (input$prob_type == "greater") {
+            1 - pt(input$x_value, df = input$df)
+          } else if (input$prob_type == "less") {
+            pt(input$x_value, df = input$df)
+          } else {
+            2 * (1 - pt(abs(input$x_value), df = input$df))
+          }
+        },
+        "chisq" = {
+          if (input$prob_type == "greater") {
+            1 - pchisq(input$x_value, df = input$df)
+          } else {
+            pchisq(input$x_value, df = input$df)
+          }
+        },
+        "f" = {
+          if (input$prob_type == "greater") {
+            1 - pf(input$x_value, df1 = input$df1, df2 = input$df2)
+          } else {
+            pf(input$x_value, df1 = input$df1, df2 = input$df2)
+          }
+        },
+        "gamma" = {
+          if (input$prob_type == "greater") {
+            1 - pgamma(input$x_value, shape = input$gamma_shape, rate = input$gamma_rate)
+          } else {
+            pgamma(input$x_value, shape = input$gamma_shape, rate = input$gamma_rate)
+          }
+        },
+        "lnorm" = {
+          if (input$prob_type == "greater") {
+            1 - plnorm(input$x_value, meanlog = input$meanlog, sdlog = input$sdlog)
+          } else {
+            plnorm(input$x_value, meanlog = input$meanlog, sdlog = input$sdlog)
+          }
+        },
+        "pareto" = {
+          if (input$prob_type == "greater") {
+            1 - ppareto(input$x_value, input$pareto_m, input$pareto_alpha)
+          } else {
+            ppareto(input$x_value, input$pareto_m, input$pareto_alpha)
+          }
+        },
+        "weibull" = {
+          if (input$prob_type == "greater") {
+            1 - pweibull(input$x_value, shape = input$weibull_alpha, scale = input$weibull_beta)
+          } else {
+            pweibull(input$x_value, shape = input$weibull_alpha, scale = input$weibull_beta)
+          }
+        },
+        # Distribuições discretas
+        "binom" = {
+          if (input$prob_type_disc == "greater_eq") {
+            1 - pbinom(input$x_value - 1, size = input$binom_n, prob = input$binom_p)
+          } else if (input$prob_type_disc == "less_eq") {
+            pbinom(input$x_value, size = input$binom_n, prob = input$binom_p)
+          } else {
+            dbinom(input$x_value, size = input$binom_n, prob = input$binom_p)
+          }
+        },
+        "pois" = {
+          if (input$prob_type_disc == "greater_eq") {
+            1 - ppois(input$x_value - 1, lambda = input$lambda)
+          } else if (input$prob_type_disc == "less_eq") {
+            ppois(input$x_value, lambda = input$lambda)
+          } else {
+            dpois(input$x_value, lambda = input$lambda)
+          }
         }
-      } else if (input$dist == "t") {
-        prob <- if (input$prob_type == "greater") {
-          1 - pt(input$x_value, df = input$df)
-        } else if (input$prob_type == "less") {
-          pt(input$x_value, df = input$df)
-        } else {
-          2 * (1 - pt(abs(input$x_value), df = input$df))
-        }
-      }
-      # ... outros casos de distribuição ...
+        # ... adicione outras distribuições conforme necessário
+      )
+      
+      result_values(list(x = input$x_value, prob = prob, x_from_p = NA))
       
     } else {
       # Cálculo quando o usuário fornece probabilidade
-      if (input$dist == "norm") {
-        x_from_p <- if (input$prob_type == "greater") {
-          qnorm(1 - input$prob_value, input$mean, input$sd)
-        } else if (input$prob_type == "less") {
-          qnorm(input$prob_value, input$mean, input$sd)
-        } else {
-          qnorm(1 - input$prob_value/2, input$mean, input$sd)
+      x_from_p <- switch(input$dist,
+        "norm" = {
+          if (input$prob_type == "greater") {
+            qnorm(1 - input$prob_value, input$mean, input$sd)
+          } else if (input$prob_type == "less") {
+            qnorm(input$prob_value, input$mean, input$sd)
+          } else {
+            qnorm(1 - input$prob_value/2, input$mean, input$sd)
+          }
+        },
+        "t" = {
+          if (input$prob_type == "greater") {
+            qt(1 - input$prob_value, df = input$df)
+          } else if (input$prob_type == "less") {
+            qt(input$prob_value, df = input$df)
+          } else {
+            qt(1 - input$prob_value/2, df = input$df)
+          }
+        },
+        "chisq" = {
+          if (input$prob_type == "greater") {
+            qchisq(1 - input$prob_value, df = input$df)
+          } else {
+            qchisq(input$prob_value, df = input$df)
+          }
+        },
+        "f" = {
+          if (input$prob_type == "greater") {
+            qf(1 - input$prob_value, df1 = input$df1, df2 = input$df2)
+          } else {
+            qf(input$prob_value, df1 = input$df1, df2 = input$df2)
+          }
+        },
+        "gamma" = {
+          if (input$prob_type == "greater") {
+            qgamma(1 - input$prob_value, shape = input$gamma_shape, rate = input$gamma_rate)
+          } else {
+            qgamma(input$prob_value, shape = input$gamma_shape, rate = input$gamma_rate)
+          }
+        },
+        "lnorm" = {
+          if (input$prob_type == "greater") {
+            qlnorm(1 - input$prob_value, meanlog = input$meanlog, sdlog = input$sdlog)
+          } else {
+            qlnorm(input$prob_value, meanlog = input$meanlog, sdlog = input$sdlog)
+          }
+        },
+        "pareto" = {
+          if (input$prob_type == "greater") {
+            qpareto(1 - input$prob_value, input$pareto_m, input$pareto_alpha)
+          } else {
+            qpareto(input$prob_value, input$pareto_m, input$pareto_alpha)
+          }
+        },
+        "weibull" = {
+          if (input$prob_type == "greater") {
+            qweibull(1 - input$prob_value, shape = input$weibull_alpha, scale = input$weibull_beta)
+          } else {
+            qweibull(input$prob_value, shape = input$weibull_alpha, scale = input$weibull_beta)
+          }
+        },
+        "binom" = {
+          if (input$prob_type_disc == "greater_eq") {
+            qbinom(1 - input$prob_value, size = input$binom_n, prob = input$binom_p) + 1
+          } else if (input$prob_type_disc == "less_eq") {
+            qbinom(input$prob_value, size = input$binom_n, prob = input$binom_p)
+          } else {
+            NA
+          }
+        },
+        "pois" = {
+          if (input$prob_type_disc == "greater_eq") {
+            qpois(1 - input$prob_value, lambda = input$lambda)
+          } else if (input$prob_type_disc == "less_eq") {
+            qpois(input$prob_value, lambda = input$lambda)
+          } else {
+            NA
+          }
+        },
+        "geom1" = {
+          if (input$prob_type_disc == "greater_eq") {
+            qgeom(1 - input$prob_value, prob = input$geom1_p) + 1
+          } else if (input$prob_type_disc == "less_eq") {
+            qgeom(input$prob_value, prob = input$geom1_p) + 1
+          } else {
+            NA
+          }
+        },
+        "geom2" = {
+          if (input$prob_type_disc == "greater_eq") {
+            qgeom(1 - input$prob_value, prob = input$geom2_p)
+          } else if (input$prob_type_disc == "less_eq") {
+            qgeom(input$prob_value, prob = input$geom2_p)
+          } else {
+            NA
+          }
+        },
+        "hyper" = {
+          if (input$prob_type_disc == "greater_eq") {
+            qhyper(1 - input$prob_value, input$hyper_K, input$hyper_N - input$hyper_K, input$hyper_n)
+          } else if (input$prob_type_disc == "less_eq") {
+            qhyper(input$prob_value, input$hyper_K, input$hyper_N - input$hyper_K, input$hyper_n)
+          } else {
+            NA
+          }
+        },
+        "nbin1" = {
+          if (input$prob_type_disc == "greater_eq") {
+            qnbinom(1 - input$prob_value, size = input$nbin1_r, prob = input$nbin1_p) + input$nbin1_r
+          } else if (input$prob_type_disc == "less_eq") {
+            qnbinom(input$prob_value, size = input$nbin1_r, prob = input$nbin1_p) + input$nbin1_r
+          } else {
+            NA
+          }
+        },
+        "nbin2" = {
+          if (input$prob_type_disc == "greater_eq") {
+            qnbinom(1 - input$prob_value, size = input$nbin2_r, prob = input$nbin2_p)
+          } else if (input$prob_type_disc == "less_eq") {
+            qnbinom(input$prob_value, size = input$nbin2_r, prob = input$nbin2_p)
+          } else {
+            NA
+          }
+        },
+        "beta" = {
+          if (input$prob_type == "greater") {
+            qbeta(1 - input$prob_value, shape1 = input$alpha, shape2 = input$beta)
+          } else if (input$prob_type == "less") {
+            qbeta(input$prob_value, shape1 = input$alpha, shape2 = input$beta)
+          } else {
+            qbeta(1 - input$prob_value/2, shape1 = input$alpha, shape2 = input$beta)
+          }
+        },
+        "exp" = {
+          if (input$prob_type == "greater") {
+            qexp(1 - input$prob_value, rate = input$lambda_exp)
+          } else {
+            qexp(input$prob_value, rate = input$lambda_exp)
+          }
         }
-        prob <- input$prob_value
-      }
-      # ... outros casos de distribuição ...
+      )
+      
+      result_values(list(x = x_from_p, prob = input$prob_value, x_from_p = x_from_p))
     }
-    
-    # Atualizar os valores
-    result_values(list(
-      x = if (!input$prob_input) input$x_value else x_from_p,
-      prob = prob,
-      x_from_p = x_from_p
-    ))
-  })
+})
   
   output$dist_plot <- renderPlot({
     data <- dist_data()
@@ -1307,6 +1503,44 @@ translations <- list(
       "<h4>%s</h4>",
       sprintf(t$result_p, res$x, res$prob)
     ))
+  })
+  
+  # Função para resetar valores
+  resetValues <- function() {
+    # Reset dos inputs baseado na distribuição atual
+    if (input$dist == "norm") {
+      updateNumericInput(session, "mean", value = 0)
+      updateNumericInput(session, "sd", value = 1)
+    } else if (input$dist == "t") {
+      updateNumericInput(session, "df", value = 5)
+    } else if (input$dist == "chisq") {
+      updateNumericInput(session, "df", value = 1)
+    } else if (input$dist == "f") {
+      updateNumericInput(session, "df1", value = 1)
+      updateNumericInput(session, "df2", value = 1)
+    } else if (input$dist == "gamma") {
+      updateNumericInput(session, "gamma_shape", value = 2)
+      updateNumericInput(session, "gamma_rate", value = 1)
+    }
+    # ... adicione outros casos para cada distribuição ...
+    
+    # Reset dos inputs comuns
+    updateNumericInput(session, "x_value", value = 0)
+    updateNumericInput(session, "prob_value", value = 0.95)
+    updateCheckboxInput(session, "prob_input", value = FALSE)
+    
+    # Reset do resultado
+    result_values(list(x = 0, prob = 0, x_from_p = 0))
+  }
+  
+  # Observer para o botão de reset
+  observeEvent(input$reset_btn, {
+    resetValues()
+  })
+  
+  # Observer para mudança de distribuição
+  observeEvent(input$dist, {
+    resetValues()
   })
 }
 
