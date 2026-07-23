@@ -1,7 +1,7 @@
 # ProbCalc - Calculadora de Distribuições de Probabilidade
 
 ## Sobre o Projeto
-ProbCalc é uma aplicação web interativa desenvolvida para auxiliar estudantes e profissionais no cálculo e visualização de distribuições de probabilidade. A aplicação oferece uma interface intuitiva para trabalhar com várias distribuições estatísticas comuns.
+ProbCalc é uma aplicação web interativa desenvolvida para auxiliar estudantes e profissionais no cálculo e visualização de distribuições de probabilidade. A aplicação oferece uma interface intuitiva para trabalhar com várias distribuições estatísticas comuns, em três idiomas (português, inglês e espanhol).
 
 ## Funcionalidades
 
@@ -17,26 +17,38 @@ ProbCalc é uma aplicação web interativa desenvolvida para auxiliar estudantes
 - Binomial
 - Geométrica (tentativas e fracassos)
 - Hipergeométrica
+- Beta
 - Binomial Negativa (tentativas e fracassos)
 - Exponencial
 - Poisson
 
 ### Recursos
-- Cálculo de probabilidades
-- Visualização gráfica interativa
-- Suporte a diferentes tipos de cálculos:
-  - P(X > x)
-  - P(X < x)
-  - P(X = x)
-  - Cálculo de valores críticos
-- Fórmulas matemáticas detalhadas para cada distribuição
-- Interface responsiva e moderna
+- Cálculo de probabilidades: P(X > x), P(X < x), 2P(|X| > x), P(X ≥ x), P(X ≤ x), P(X = x)
+- Cálculo inverso (valor de x para uma probabilidade dada)
+- Visualização gráfica com destaque da área/barras correspondentes
+- Fórmulas matemáticas detalhadas para cada distribuição (MathJax)
+- Interface trilíngue e responsiva
 
 ## Tecnologias Utilizadas
 - R Shiny para o backend e frontend
-- Bootstrap 5 para estilização
+- Bootstrap 5 (bslib) para estilização
 - MathJax para renderização de fórmulas matemáticas
 - ggplot2 para visualizações gráficas
+
+## Estrutura do Projeto
+```
+├── app.R                 # UI e server
+├── R/
+│   ├── dist_registry.R   # registry central: parâmetros, funções d/p/q,
+│   │                     #   validação e faixa de plot por distribuição
+│   ├── calc.R            # funções puras de cálculo (testáveis)
+│   ├── ui_helpers.R      # componentes de UI gerados a partir do registry
+│   ├── i18n.R            # infraestrutura de tradução
+│   └── translations_*.R  # textos da UI em pt/en/es
+├── www/help_*.html       # fórmulas (HTML + LaTeX) por idioma
+└── tests/testthat/       # testes automatizados
+```
+Para adicionar uma distribuição, basta criar uma entrada em `R/dist_registry.R` e as chaves de tradução correspondentes — UI, cálculo, validação e reset derivam do registry.
 
 ## Como Usar
 
@@ -49,11 +61,17 @@ ProbCalc é uma aplicação web interativa desenvolvida para auxiliar estudantes
 
 ### Executando a Aplicação
 1. Clone o repositório
-2. Abra o R ou RStudio
+2. Abra o R ou RStudio na pasta do projeto
 3. Execute:
    ```R
-   shiny::runApp("caminho/para/o/projeto")
+   shiny::runApp(".")
    ```
+
+### Rodando os Testes
+```R
+install.packages("testthat")
+testthat::test_dir("tests/testthat")
+```
 
 ## Exemplos de Uso
 1. Selecione uma distribuição
@@ -70,4 +88,4 @@ Contribuições são bem-vindas! Sinta-se à vontade para:
 - Submeter pull requests
 
 ## Licença
-Este projeto está sob a licença MIT.
+Este projeto está sob a licença [MIT](LICENSE).
