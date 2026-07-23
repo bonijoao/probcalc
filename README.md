@@ -1,5 +1,9 @@
 # ProbCalc - Calculadora de Distribuições de Probabilidade
 
+[![Test and deploy](https://github.com/bonijoao/probcalc/actions/workflows/deploy.yml/badge.svg)](https://github.com/bonijoao/probcalc/actions/workflows/deploy.yml)
+
+**🌐 Use online: <https://bonijoao.github.io/probcalc/>** (roda 100% no navegador via [shinylive](https://posit-dev.github.io/r-shinylive/)/webR — o primeiro carregamento demora um pouco)
+
 ## Sobre o Projeto
 ProbCalc é uma aplicação web interativa desenvolvida para auxiliar estudantes e profissionais no cálculo e visualização de distribuições de probabilidade. A aplicação oferece uma interface intuitiva para trabalhar com várias distribuições estatísticas comuns, em três idiomas (português, inglês e espanhol).
 
