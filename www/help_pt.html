@@ -1,0 +1,316 @@
+<h1>Resumo das Distribuições de Probabilidade</h1>
+
+<h2>1. Distribuição Normal</h2>
+<p><strong>Notação:</strong> \(X \sim N(\mu, \sigma^2)\)</p>
+
+<p><strong>Parâmetros:</strong></p>
+<ul>
+  <li>\(\mu \in \mathbb{R}\) (média)</li>
+  <li>\(\sigma > 0\) (desvio padrão)</li>
+</ul>
+
+<p><strong>Suporte:</strong> \(x \in \mathbb{R}\)</p>
+
+<p><strong>Função Densidade:</strong></p>
+\[f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}\]
+
+<p><strong>Esperança:</strong></p>
+\[E(X) = \mu\]
+
+<p><strong>Variância:</strong></p>
+\[Var(X) = \sigma^2\]
+
+<h2>2. Distribuição t-Student</h2>
+<p><strong>Notação:</strong> \(X \sim t_{\nu}\)</p>
+
+<p><strong>Parâmetros:</strong></p>
+<ul>
+  <li>\(\nu > 0\) (graus de liberdade)</li>
+</ul>
+
+<p><strong>Suporte:</strong> \(x \in \mathbb{R}\)</p>
+
+<p><strong>Função Densidade:</strong></p>
+\[f(x) = \frac{\Gamma(\frac{\nu+1}{2})}{\sqrt{\nu\pi}\,\Gamma(\frac{\nu}{2})} \left(1+\frac{x^2}{\nu}\right)^{-\frac{\nu+1}{2}}\]
+
+<p><strong>Esperança:</strong></p>
+\[E(X) = 0 \quad \text{(se } \nu > 1\text{)}\]
+
+<p><strong>Variância:</strong></p>
+\[Var(X) = \frac{\nu}{\nu-2} \quad \text{(se } \nu > 2\text{)}\]
+
+<h2>3. Distribuição Qui-Quadrado</h2>
+<p><strong>Notação:</strong> \(X \sim \chi^2_k\)</p>
+
+<p><strong>Parâmetros:</strong></p>
+<ul>
+  <li>\(k > 0\) (graus de liberdade)</li>
+</ul>
+
+<p><strong>Suporte:</strong> \(x > 0\)</p>
+
+<p><strong>Função Densidade:</strong></p>
+\[f(x) = \frac{1}{2^{k/2} \Gamma(k/2)} x^{(k/2)-1} e^{-x/2}\]
+
+<p><strong>Esperança:</strong></p>
+\[E(X) = k\]
+
+<p><strong>Variância:</strong></p>
+\[Var(X) = 2k\]
+
+<h2>4. Distribuição F</h2>
+<p><strong>Notação:</strong> \(X \sim F_{d_1,d_2}\)</p>
+
+<p><strong>Parâmetros:</strong></p>
+<ul>
+  <li>\(d_1 > 0\) (graus de liberdade do numerador)</li>
+  <li>\(d_2 > 0\) (graus de liberdade do denominador)</li>
+</ul>
+
+<p><strong>Suporte:</strong> \(x > 0\)</p>
+
+<p><strong>Função Densidade:</strong></p>
+\[f(x) = \frac{\left(\frac{d_1}{d_2}\right)^{d_1/2} x^{(d_1/2)-1}}{B(d_1/2, d_2/2) \left( 1 + \frac{d_1}{d_2} x \right)^{(d_1+d_2)/2}}\]
+
+<p><strong>Esperança:</strong></p>
+\[E(X) = \frac{d_2}{d_2-2} \quad \text{(se } d_2 > 2\text{)}\]
+
+<p><strong>Variância:</strong></p>
+\[Var(X) = \frac{2d_2^2(d_1+d_2-2)}{d_1(d_2-2)^2(d_2-4)} \quad \text{(se } d_2 > 4\text{)}\]
+
+<h2>5. Distribuição Gamma</h2>
+<p><strong>Notação:</strong> \(X \sim Gamma(\alpha, \beta)\)</p>
+
+<p><strong>Parâmetros:</strong></p>
+<ul>
+  <li>\(\alpha > 0\) (parâmetro de forma)</li>
+  <li>\(\beta > 0\) (parâmetro de taxa)</li>
+</ul>
+
+<p><strong>Suporte:</strong> \(x > 0\)</p>
+
+<p><strong>Função Densidade:</strong></p>
+\[f(x) = \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\beta x}\]
+
+<p><strong>Esperança:</strong></p>
+\[E(X) = \frac{\alpha}{\beta}\]
+
+<p><strong>Variância:</strong></p>
+\[Var(X) = \frac{\alpha}{\beta^2}\]
+
+<h2>6. Distribuição Log-normal</h2>
+<p><strong>Notação:</strong> \(X \sim LogN(\mu, \sigma^2)\)</p>
+
+<p><strong>Parâmetros:</strong></p>
+<ul>
+  <li>\(\mu \in \mathbb{R}\) (média do logaritmo)</li>
+  <li>\(\sigma > 0\) (desvio padrão do logaritmo)</li>
+</ul>
+
+<p><strong>Suporte:</strong> \(x > 0\)</p>
+
+<p><strong>Função Densidade:</strong></p>
+\[f(x) = \frac{1}{x\sigma\sqrt{2\pi}} e^{-\frac{(\ln x - \mu)^2}{2\sigma^2}}\]
+
+<p><strong>Esperança:</strong></p>
+\[E(X) = e^{\mu + \sigma^2/2}\]
+
+<p><strong>Variância:</strong></p>
+\[Var(X) = (e^{\sigma^2}-1)e^{2\mu + \sigma^2}\]
+
+<h2>7. Distribuição Pareto</h2>
+<p><strong>Notação:</strong> \(X \sim Pareto(m, \alpha)\)</p>
+
+<p><strong>Parâmetros:</strong></p>
+<ul>
+  <li>\(m > 0\) (parâmetro de escala/mínimo)</li>
+  <li>\(\alpha > 0\) (parâmetro de forma)</li>
+</ul>
+
+<p><strong>Suporte:</strong> \(x \geq m\)</p>
+
+<p><strong>Função Densidade:</strong></p>
+\[f(x) = \frac{\alpha m^\alpha}{x^{\alpha+1}}\]
+
+<p><strong>Esperança:</strong></p>
+\[E(X) = \frac{\alpha m}{\alpha-1} \quad \text{(se } \alpha > 1\text{)}\]
+
+<p><strong>Variância:</strong></p>
+\[Var(X) = \frac{\alpha m^2}{(\alpha-1)^2(\alpha-2)} \quad \text{(se } \alpha > 2\text{)}\]
+
+<h2>8. Distribuição Weibull</h2>
+<p><strong>Notação:</strong> \(X \sim Weibull(\alpha, \beta)\)</p>
+
+<p><strong>Parâmetros:</strong></p>
+<ul>
+  <li>\(\alpha > 0\) (parâmetro de forma)</li>
+  <li>\(\beta > 0\) (parâmetro de escala)</li>
+</ul>
+
+<p><strong>Suporte:</strong> \(x > 0\)</p>
+
+<p><strong>Função Densidade:</strong></p>
+\[f(x) = \frac{\alpha}{\beta}\left(\frac{x}{\beta}\right)^{\alpha-1}e^{-(x/\beta)^\alpha}\]
+
+<p><strong>Esperança:</strong></p>
+\[E(X) = \beta\Gamma(1+\frac{1}{\alpha})\]
+
+<p><strong>Variância:</strong></p>
+\[Var(X) = \beta^2\left[\Gamma(1+\frac{2}{\alpha})-\Gamma^2(1+\frac{1}{\alpha})\right]\]
+
+<h2>9. Distribuição Binomial</h2>
+<p><strong>Notação:</strong> \(X \sim B(n,p)\)</p>
+
+<p><strong>Parâmetros:</strong></p>
+<ul>
+  <li>\(n \in \mathbb{N}^*\) (número de tentativas)</li>
+  <li>\(p \in [0,1]\) (probabilidade de sucesso)</li>
+</ul>
+
+<p><strong>Suporte:</strong> \(x \in \{0,1,\ldots,n\}\)</p>
+
+<p><strong>Função de Massa:</strong></p>
+\[P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}\]
+
+<p><strong>Esperança:</strong></p>
+\[E(X) = np\]
+
+<p><strong>Variância:</strong></p>
+\[Var(X) = np(1-p)\]
+
+<h2>10. Distribuição Geométrica (tentativas)</h2>
+<p><strong>Notação:</strong> \(X \sim Geom_1(p)\)</p>
+
+<p><strong>Parâmetros:</strong></p>
+<ul>
+  <li>\(p \in (0,1]\) (probabilidade de sucesso)</li>
+</ul>
+
+<p><strong>Suporte:</strong> \(x \in \mathbb{N}^*\)</p>
+
+<p><strong>Função de Massa:</strong></p>
+\[P(X = k) = p(1-p)^{k-1}\]
+
+<p><strong>Esperança:</strong></p>
+\[E(X) = \frac{1}{p}\]
+
+<p><strong>Variância:</strong></p>
+\[Var(X) = \frac{1-p}{p^2}\]
+
+<h2>11. Distribuição Geométrica (fracassos)</h2>
+<p><strong>Notação:</strong> \(X \sim Geom_0(p)\)</p>
+
+<p><strong>Parâmetros:</strong></p>
+<ul>
+  <li>\(p \in (0,1]\) (probabilidade de sucesso)</li>
+</ul>
+
+<p><strong>Suporte:</strong> \(x \in \mathbb{N}_0\)</p>
+
+<p><strong>Função de Massa:</strong></p>
+\[P(X = k) = p(1-p)^k\]
+
+<p><strong>Esperança:</strong></p>
+\[E(X) = \frac{1-p}{p}\]
+
+<p><strong>Variância:</strong></p>
+\[Var(X) = \frac{1-p}{p^2}\]
+
+<h2>12. Distribuição Hipergeométrica</h2>
+<p><strong>Notação:</strong> \(X \sim H(N,K,n)\)</p>
+
+<p><strong>Parâmetros:</strong></p>
+<ul>
+  <li>\(N \in \mathbb{N}^*\) (tamanho da população)</li>
+  <li>\(K \in \{0,\ldots,N\}\) (número de sucessos na população)</li>
+  <li>\(n \in \{0,\ldots,N\}\) (tamanho da amostra)</li>
+</ul>
+
+<p><strong>Suporte:</strong> \(x \in \{\max(0,n-N+K),\ldots,\min(n,K)\}\)</p>
+
+<p><strong>Função de Massa:</strong></p>
+\[P(X = k) = \frac{\binom{K}{k}\binom{N-K}{n-k}}{\binom{N}{n}}\]
+
+<p><strong>Esperança:</strong></p>
+\[E(X) = n\frac{K}{N}\]
+
+<p><strong>Variância:</strong></p>
+\[Var(X) = n\frac{K}{N}\left(1-\frac{K}{N}\right)\frac{N-n}{N-1}\]
+
+<h2>13. Distribuição Binomial Negativa (tentativas)</h2>
+<p><strong>Notação:</strong> \(X \sim NB_1(r,p)\)</p>
+
+<p><strong>Parâmetros:</strong></p>
+<ul>
+  <li>\(r \in \mathbb{N}^*\) (número de sucessos desejados)</li>
+  <li>\(p \in (0,1]\) (probabilidade de sucesso)</li>
+</ul>
+
+<p><strong>Suporte:</strong> \(x \in \{r,r+1,\ldots\}\)</p>
+
+<p><strong>Função de Massa:</strong></p>
+\[P(X = k) = \binom{k-1}{r-1}p^r(1-p)^{k-r}\]
+
+<p><strong>Esperança:</strong></p>
+\[E(X) = \frac{r}{p}\]
+
+<p><strong>Variância:</strong></p>
+\[Var(X) = \frac{r(1-p)}{p^2}\]
+
+<h2>14. Distribuição Binomial Negativa (fracassos)</h2>
+<p><strong>Notação:</strong> \(X \sim NB_0(r,p)\)</p>
+
+<p><strong>Parâmetros:</strong></p>
+<ul>
+  <li>\(r \in \mathbb{N}^*\) (número de sucessos desejados)</li>
+  <li>\(p \in (0,1]\) (probabilidade de sucesso)</li>
+</ul>
+
+<p><strong>Suporte:</strong> \(x \in \mathbb{N}_0\)</p>
+
+<p><strong>Função de Massa:</strong></p>
+\[P(X = k) = \binom{k+r-1}{r-1}p^r(1-p)^k\]
+
+<p><strong>Esperança:</strong></p>
+\[E(X) = \frac{r(1-p)}{p}\]
+
+<p><strong>Variância:</strong></p>
+\[Var(X) = \frac{r(1-p)}{p^2}\]
+
+<h2>15. Distribuição Exponencial</h2>
+<p><strong>Notação:</strong> \(X \sim Exp(\lambda)\)</p>
+
+<p><strong>Parâmetros:</strong></p>
+<ul>
+  <li>\(\lambda > 0\) (taxa)</li>
+</ul>
+
+<p><strong>Suporte:</strong> \(x \geq 0\)</p>
+
+<p><strong>Função Densidade:</strong></p>
+\[f(x) = \lambda e^{-\lambda x}\]
+
+<p><strong>Esperança:</strong></p>
+\[E(X) = \frac{1}{\lambda}\]
+
+<p><strong>Variância:</strong></p>
+\[Var(X) = \frac{1}{\lambda^2}\]
+
+<h2>16. Distribuição Poisson</h2>
+<p><strong>Notação:</strong> \(X \sim Poisson(\lambda)\)</p>
+
+<p><strong>Parâmetros:</strong></p>
+<ul>
+  <li>\(\lambda > 0\) (taxa média)</li>
+</ul>
+
+<p><strong>Suporte:</strong> \(x \in \mathbb{N}_0\)</p>
+
+<p><strong>Função de Massa:</strong></p>
+\[P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}\]
+
+<p><strong>Esperança:</strong></p>
+\[E(X) = \lambda\]
+
+<p><strong>Variância:</strong></p>
+\[Var(X) = \lambda\]

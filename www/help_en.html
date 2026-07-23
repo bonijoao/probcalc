@@ -1,0 +1,83 @@
+<h1>Probability Distributions Summary</h1>
+
+<h2>1. Normal Distribution</h2>
+<p><strong>Density Function:</strong></p>
+<p class="formula">
+    f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}
+</p>
+<p><strong>Mean:</strong> \( \mu \) &nbsp;&nbsp; <strong>Variance:</strong> \( \sigma^2 \)</p>
+
+<h2>2. t-Student Distribution</h2>
+<p><strong>Density Function:</strong></p>
+<p class="formula">f(x) = \frac{\Gamma(\frac{\nu+1}{2})}{\sqrt{\nu\pi} \Gamma(\frac{\nu}{2})} \left(1 + \frac{x^2}{\nu} \right)^{-\frac{\nu+1}{2}}</p>
+<p><strong>Mean:</strong> 0 (if \( \nu > 1 \)) &nbsp;&nbsp; <strong>Variance:</strong> \( \frac{\nu}{\nu-2} \) (if \( \nu > 2 \))</p>
+
+<h2>3. Chi-Square Distribution</h2>
+<p><strong>Density Function:</strong></p>
+<p class="formula">f(x) = \frac{1}{2^{k/2} \Gamma(k/2)} x^{(k/2)-1} e^{-x/2}, \quad x > 0</p>
+<p><strong>Mean:</strong> \( k \) &nbsp;&nbsp; <strong>Variance:</strong> \( 2k \)</p>
+
+<h2>4. F Distribution</h2>
+<p><strong>Density Function:</strong></p>
+<p class="formula">f(x) = \frac{\left(\frac{d_1}{d_2}\right)^{d_1/2} x^{(d_1/2)-1}}{B(d_1/2, d_2/2) \left( 1 + \frac{d_1}{d_2} x \right)^{(d_1+d_2)/2}}</p>
+<p><strong>Mean:</strong> \( \frac{d_2}{d_2-2} \) (if \( d_2 > 2 \))</p>
+
+<h2>5. Gamma Distribution</h2>
+<p><strong>Density Function:</strong></p>
+<p class="formula">f(x) = \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\beta x}, \quad x > 0</p>
+<p><strong>Mean:</strong> \( \frac{\alpha}{\beta} \) &nbsp;&nbsp; <strong>Variance:</strong> \( \frac{\alpha}{\beta^2} \)</p>
+
+<h2>6. Log-Normal Distribution</h2>
+<p><strong>Density Function:</strong></p>
+<p class="formula">f(x) = \frac{1}{x\sigma\sqrt{2\pi}} e^{-\frac{(\ln x - \mu)^2}{2\sigma^2}}, \quad x > 0</p>
+<p><strong>Mean:</strong> \( e^{\mu + \sigma^2/2} \) &nbsp;&nbsp; <strong>Variance:</strong> \( (e^{\sigma^2}-1)e^{2\mu + \sigma^2} \)</p>
+
+<h2>7. Pareto Distribution</h2>
+<p><strong>Density Function:</strong></p>
+<p class="formula">f(x) = \frac{\alpha m^\alpha}{x^{\alpha+1}}, \quad x \geq m</p>
+<p><strong>Mean:</strong> \( \frac{\alpha m}{\alpha-1} \) (if \( \alpha > 1 \)) &nbsp;&nbsp; <strong>Variance:</strong> \( \frac{\alpha m^2}{(\alpha-1)^2(\alpha-2)} \) (if \( \alpha > 2 \))</p>
+
+<h2>8. Weibull Distribution</h2>
+<p><strong>Density Function:</strong></p>
+<p class="formula">f(x) = \frac{\alpha}{\beta}\left(\frac{x}{\beta}\right)^{\alpha-1}e^{-(x/\beta)^\alpha}, \quad x > 0</p>
+<p><strong>Mean:</strong> \( \beta\Gamma(1+\frac{1}{\alpha})\) &nbsp;&nbsp; <strong>Variance:</strong> \( \beta^2[\Gamma(1+\frac{2}{\alpha})-\Gamma^2(1+\frac{1}{\alpha})] \)</p>
+
+<h2>9. Binomial Distribution</h2>
+<p><strong>Probability Mass:</strong></p>
+<p class="formula">P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}, \quad k = 0,1,\ldots,n</p>
+<p><strong>Mean:</strong> \( np \) &nbsp;&nbsp; <strong>Variance:</strong> \( np(1-p) \)</p>
+
+<h2>10. Geometric (trials) Distribution</h2>
+<p><strong>Probability Mass:</strong></p>
+<p class="formula">P(X = k) = p(1-p)^{k-1}, \quad k = 1,2,\ldots</p>
+<p><strong>Mean:</strong> \( \frac{1}{p} \) &nbsp;&nbsp; <strong>Variance:</strong> \( \frac{1-p}{p^2} \)</p>
+
+<h2>11. Geometric (failures) Distribution</h2>
+<p><strong>Probability Mass:</strong></p>
+<p class="formula">P(X = k) = p(1-p)^k, \quad k = 0,1,2,\ldots</p>
+<p><strong>Mean:</strong> \( \frac{1-p}{p} \) &nbsp;&nbsp; <strong>Variance:</strong> \( \frac{1-p}{p^2} \)</p>
+
+<h2>12. Hypergeometric Distribution</h2>
+<p><strong>Probability Mass:</strong></p>
+<p class="formula">P(X = k) = \frac{\binom{K}{k}\binom{N-K}{n-k}}{\binom{N}{n}}, \quad \max(0,n-N+K) \leq k \leq \min(n,K)</p>
+<p><strong>Mean:</strong> \( n\frac{K}{N} \) &nbsp;&nbsp; <strong>Variance:</strong> \( n\frac{K}{N}(1-\frac{K}{N})\frac{N-n}{N-1} \)</p>
+
+<h2>13. Negative Binomial (trials) Distribution</h2>
+<p><strong>Probability Mass:</strong></p>
+<p class="formula">P(X = k) = \binom{k-1}{r-1}p^r(1-p)^{k-r}, \quad k = r,r+1,\ldots</p>
+<p><strong>Mean:</strong> \( \frac{r}{p} \) &nbsp;&nbsp; <strong>Variance:</strong> \( \frac{r(1-p)}{p^2} \)</p>
+
+<h2>14. Negative Binomial (failures) Distribution</h2>
+<p><strong>Probability Mass:</strong></p>
+<p class="formula">P(X = k) = \binom{k+r-1}{r-1}p^r(1-p)^k, \quad k = 0,1,2,\ldots</p>
+<p><strong>Mean:</strong> \( \frac{r(1-p)}{p} \) &nbsp;&nbsp; <strong>Variance:</strong> \( \frac{r(1-p)}{p^2} \)</p>
+
+<h2>15. Exponential Distribution</h2>
+<p><strong>Density Function:</strong></p>
+<p class="formula">f(x) = \lambda e^{-\lambda x}, \quad x \geq 0</p>
+<p><strong>Mean:</strong> \( \frac{1}{\lambda} \) &nbsp;&nbsp; <strong>Variance:</strong> \( \frac{1}{\lambda^2} \)</p>
+
+<h2>16. Poisson Distribution</h2>
+<p><strong>Probability Mass:</strong></p>
+<p class="formula">P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad k = 0,1,2,\ldots</p>
+<p><strong>Mean:</strong> \( \lambda \) &nbsp;&nbsp; <strong>Variance:</strong> \( \lambda \)</p>

@@ -1,0 +1,83 @@
+<h1>Resumen de Distribuciones de Probabilidad</h1>
+
+<h2>1. Distribución Normal</h2>
+<p><strong>Función de Densidad:</strong></p>
+<p class="formula">
+    f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}
+</p>
+<p><strong>Media:</strong> \( \mu \) &nbsp;&nbsp; <strong>Varianza:</strong> \( \sigma^2 \)</p>
+
+<h2>2. Distribución t-Student</h2>
+<p><strong>Función de Densidad:</strong></p>
+<p class="formula">f(x) = \frac{\Gamma(\frac{\nu+1}{2})}{\sqrt{\nu\pi} \Gamma(\frac{\nu}{2})} \left(1 + \frac{x^2}{\nu} \right)^{-\frac{\nu+1}{2}}</p>
+<p><strong>Media:</strong> 0 (si \( \nu > 1 \)) &nbsp;&nbsp; <strong>Varianza:</strong> \( \frac{\nu}{\nu-2} \) (si \( \nu > 2 \))</p>
+
+<h2>3. Distribución Chi-Cuadrado</h2>
+<p><strong>Función de Densidad:</strong></p>
+<p class="formula">f(x) = \frac{1}{2^{k/2} \Gamma(k/2)} x^{(k/2)-1} e^{-x/2}, \quad x > 0</p>
+<p><strong>Media:</strong> \( k \) &nbsp;&nbsp; <strong>Varianza:</strong> \( 2k \)</p>
+
+<h2>4. Distribución F</h2>
+<p><strong>Función de Densidad:</strong></p>
+<p class="formula">f(x) = \frac{\left(\frac{d_1}{d_2}\right)^{d_1/2} x^{(d_1/2)-1}}{B(d_1/2, d_2/2) \left( 1 + \frac{d_1}{d_2} x \right)^{(d_1+d_2)/2}}</p>
+<p><strong>Media:</strong> \( \frac{d_2}{d_2-2} \) (si \( d_2 > 2 \))</p>
+
+<h2>5. Distribución Gamma</h2>
+<p><strong>Función de Densidad:</strong></p>
+<p class="formula">f(x) = \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\beta x}, \quad x > 0</p>
+<p><strong>Media:</strong> \( \frac{\alpha}{\beta} \) &nbsp;&nbsp; <strong>Varianza:</strong> \( \frac{\alpha}{\beta^2} \)</p>
+
+<h2>6. Distribución Log-Normal</h2>
+<p><strong>Función de Densidad:</strong></p>
+<p class="formula">f(x) = \frac{1}{x\sigma\sqrt{2\pi}} e^{-\frac{(\ln x - \mu)^2}{2\sigma^2}}, \quad x > 0</p>
+<p><strong>Media:</strong> \( e^{\mu + \sigma^2/2} \) &nbsp;&nbsp; <strong>Varianza:</strong> \( (e^{\sigma^2}-1)e^{2\mu + \sigma^2} \)</p>
+
+<h2>7. Distribución Pareto</h2>
+<p><strong>Función de Densidad:</strong></p>
+<p class="formula">f(x) = \frac{\alpha m^\alpha}{x^{\alpha+1}}, \quad x \geq m</p>
+<p><strong>Media:</strong> \( \frac{\alpha m}{\alpha-1} \) (si \( \alpha > 1 \)) &nbsp;&nbsp; <strong>Varianza:</strong> \( \frac{\alpha m^2}{(\alpha-1)^2(\alpha-2)} \) (si \( \alpha > 2 \))</p>
+
+<h2>8. Distribución Weibull</h2>
+<p><strong>Función de Densidad:</strong></p>
+<p class="formula">f(x) = \frac{\alpha}{\beta}\left(\frac{x}{\beta}\right)^{\alpha-1}e^{-(x/\beta)^\alpha}, \quad x > 0</p>
+<p><strong>Media:</strong> \( \beta\Gamma(1+\frac{1}{\alpha})\) &nbsp;&nbsp; <strong>Varianza:</strong> \( \beta^2[\Gamma(1+\frac{2}{\alpha})-\Gamma^2(1+\frac{1}{\alpha})] \)</p>
+
+<h2>9. Distribución Binomial</h2>
+<p><strong>Función de Masa:</strong></p>
+<p class="formula">P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}, \quad k = 0,1,\ldots,n</p>
+<p><strong>Media:</strong> \( np \) &nbsp;&nbsp; <strong>Varianza:</strong> \( np(1-p) \)</p>
+
+<h2>10. Distribución Geométrica (intentos)</h2>
+<p><strong>Función de Masa:</strong></p>
+<p class="formula">P(X = k) = p(1-p)^{k-1}, \quad k = 1,2,\ldots</p>
+<p><strong>Media:</strong> \( \frac{1}{p} \) &nbsp;&nbsp; <strong>Varianza:</strong> \( \frac{1-p}{p^2} \)</p>
+
+<h2>11. Distribución Geométrica (fracasos)</h2>
+<p><strong>Función de Masa:</strong></p>
+<p class="formula">P(X = k) = p(1-p)^k, \quad k = 0,1,2,\ldots</p>
+<p><strong>Media:</strong> \( \frac{1-p}{p} \) &nbsp;&nbsp; <strong>Varianza:</strong> \( \frac{1-p}{p^2} \)</p>
+
+<h2>12. Distribución Hipergeométrica</h2>
+<p><strong>Función de Masa:</strong></p>
+<p class="formula">P(X = k) = \frac{\binom{K}{k}\binom{N-K}{n-k}}{\binom{N}{n}}, \quad \max(0,n-N+K) \leq k \leq \min(n,K)</p>
+<p><strong>Media:</strong> \( n\frac{K}{N} \) &nbsp;&nbsp; <strong>Varianza:</strong> \( n\frac{K}{N}(1-\frac{K}{N})\frac{N-n}{N-1} \)</p>
+
+<h2>13. Distribución Binomial Negativa (intentos)</h2>
+<p><strong>Función de Masa:</strong></p>
+<p class="formula">P(X = k) = \binom{k-1}{r-1}p^r(1-p)^{k-r}, \quad k = r,r+1,\ldots</p>
+<p><strong>Media:</strong> \( \frac{r}{p} \) &nbsp;&nbsp; <strong>Varianza:</strong> \( \frac{r(1-p)}{p^2} \)</p>
+
+<h2>14. Distribución Binomial Negativa (fracasos)</h2>
+<p><strong>Función de Masa:</strong></p>
+<p class="formula">P(X = k) = \binom{k+r-1}{r-1}p^r(1-p)^k, \quad k = 0,1,2,\ldots</p>
+<p><strong>Media:</strong> \( \frac{r(1-p)}{p} \) &nbsp;&nbsp; <strong>Varianza:</strong> \( \frac{r(1-p)}{p^2} \)</p>
+
+<h2>15. Distribución Exponencial</h2>
+<p><strong>Función de Densidad:</strong></p>
+<p class="formula">f(x) = \lambda e^{-\lambda x}, \quad x \geq 0</p>
+<p><strong>Media:</strong> \( \frac{1}{\lambda} \) &nbsp;&nbsp; <strong>Varianza:</strong> \( \frac{1}{\lambda^2} \)</p>
+
+<h2>16. Distribución Poisson</h2>
+<p><strong>Función de Masa:</strong></p>
+<p class="formula">P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad k = 0,1,2,\ldots</p>
+<p><strong>Media:</strong> \( \lambda \) &nbsp;&nbsp; <strong>Varianza:</strong> \( \lambda \)</p>
